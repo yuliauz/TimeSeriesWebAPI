@@ -1,0 +1,25 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/alasql/0.4.0/alasql.min.js" type="text/javascript"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.10.7/xlsx.core.min.js" type="text/javascript"></script>
+
+
+<h2>TS Task</h2>
+<div ng-app="crudModule">
+<div ng-controller="crudController"> <p>Select category(and subcategories):   
+    <select ng-model="selectedCat" ng-options="k for (k,v) in Categories"></select></p>
+    <p>Select time series:
+    <select ng-model="selectedTs" ng-options="y.Name for y in selectedCat.TimeSeries"></select>
+    </p>
+    <button ng-click="exportData()">Export to Xls</button>
+        
+    </div>
+</div>
+
+
+    <script src="~/Scripts/angular.js"></script>
+    <script src="~/Scripts/angular-route.js"></script>
+    <script src="~/Scripts/devScripts/Module.js"></script>
+    <script src="~/Scripts/devScripts/Service.js"></script>
+    <script src="~/Scripts/devScripts/Controller.js"></script>

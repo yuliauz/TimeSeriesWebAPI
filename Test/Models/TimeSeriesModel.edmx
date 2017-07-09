@@ -1,0 +1,267 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="TSDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Categories">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Name" Type="nchar" MaxLength="20" Nullable="false" />
+          <Property Name="ParentId" Type="int" Nullable="false" />
+          <Property Name="Level" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SeriesPoints">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="TimeSeriesId" Type="int" Nullable="false" />
+          <Property Name="PeriodId" Type="int" Nullable="false" />
+          <Property Name="Date" Type="datetime" Nullable="false" />
+          <Property Name="SPValue" Type="decimal" Precision="18" Scale="0" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TimePeriods">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Name" Type="nchar" MaxLength="10" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TimeSeries">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="CategoryId" Type="int" Nullable="false" />
+          <Property Name="Name" Type="nchar" MaxLength="20" Nullable="false" />
+          <Property Name="Description" Type="nchar" MaxLength="50" />
+          <Property Name="Last Update" Type="datetime" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_SeriesPoints_TimePeriods">
+          <End Role="TimePeriods" Type="Self.TimePeriods" Multiplicity="1" />
+          <End Role="SeriesPoints" Type="Self.SeriesPoints" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TimePeriods">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SeriesPoints">
+              <PropertyRef Name="PeriodId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SeriesPoints_TimeSeries">
+          <End Role="TimeSeries" Type="Self.TimeSeries" Multiplicity="1" />
+          <End Role="SeriesPoints" Type="Self.SeriesPoints" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TimeSeries">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SeriesPoints">
+              <PropertyRef Name="TimeSeriesId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TimeSeries_Categories">
+          <End Role="Categories" Type="Self.Categories" Multiplicity="1" />
+          <End Role="TimeSeries" Type="Self.TimeSeries" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Categories">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="TimeSeries">
+              <PropertyRef Name="CategoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="TSDBModelStoreContainer">
+          <EntitySet Name="Categories" EntityType="Self.Categories" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SeriesPoints" EntityType="Self.SeriesPoints" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TimePeriods" EntityType="Self.TimePeriods" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TimeSeries" EntityType="Self.TimeSeries" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_SeriesPoints_TimePeriods" Association="Self.FK_SeriesPoints_TimePeriods">
+            <End Role="TimePeriods" EntitySet="TimePeriods" />
+            <End Role="SeriesPoints" EntitySet="SeriesPoints" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SeriesPoints_TimeSeries" Association="Self.FK_SeriesPoints_TimeSeries">
+            <End Role="TimeSeries" EntitySet="TimeSeries" />
+            <End Role="SeriesPoints" EntitySet="SeriesPoints" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TimeSeries_Categories" Association="Self.FK_TimeSeries_Categories">
+            <End Role="Categories" EntitySet="Categories" />
+            <End Role="TimeSeries" EntitySet="TimeSeries" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="TSDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Category">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="20" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="ParentId" Type="Int32" Nullable="false" />
+          <Property Name="Level" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="TimeSeries" Relationship="Self.FK_TimeSeries_Categories" FromRole="Categories" ToRole="TimeSeries" />
+        </EntityType>
+        <EntityType Name="SeriesPoint">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="TimeSeriesId" Type="Int32" Nullable="false" />
+          <Property Name="PeriodId" Type="Int32" Nullable="false" />
+          <Property Name="Date" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="TimePeriod" Relationship="Self.FK_SeriesPoints_TimePeriods" FromRole="SeriesPoints" ToRole="TimePeriods" />
+          <NavigationProperty Name="TimeSery" Relationship="Self.FK_SeriesPoints_TimeSeries" FromRole="SeriesPoints" ToRole="TimeSeries" />
+          <Property Name="SPValue" Type="Decimal" Nullable="false" Precision="18" Scale="0" />
+        </EntityType>
+        <EntityType Name="TimePeriod">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="SeriesPoints" Relationship="Self.FK_SeriesPoints_TimePeriods" FromRole="TimePeriods" ToRole="SeriesPoints" />
+        </EntityType>
+        <EntityType Name="TimeSery">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="CategoryId" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="20" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
+          <Property Name="Last_Update" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Category" Relationship="Self.FK_TimeSeries_Categories" FromRole="TimeSeries" ToRole="Categories" />
+          <NavigationProperty Name="SeriesPoints" Relationship="Self.FK_SeriesPoints_TimeSeries" FromRole="TimeSeries" ToRole="SeriesPoints" />
+        </EntityType>
+        <Association Name="FK_TimeSeries_Categories">
+          <End Role="Categories" Type="Self.Category" Multiplicity="1" />
+          <End Role="TimeSeries" Type="Self.TimeSery" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Categories">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="TimeSeries">
+              <PropertyRef Name="CategoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SeriesPoints_TimePeriods">
+          <End Role="TimePeriods" Type="Self.TimePeriod" Multiplicity="1" />
+          <End Role="SeriesPoints" Type="Self.SeriesPoint" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TimePeriods">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SeriesPoints">
+              <PropertyRef Name="PeriodId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SeriesPoints_TimeSeries">
+          <End Role="TimeSeries" Type="Self.TimeSery" Multiplicity="1" />
+          <End Role="SeriesPoints" Type="Self.SeriesPoint" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TimeSeries">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SeriesPoints">
+              <PropertyRef Name="TimeSeriesId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="TSDBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Categories" EntityType="Self.Category" />
+          <EntitySet Name="SeriesPoints" EntityType="Self.SeriesPoint" />
+          <EntitySet Name="TimePeriods" EntityType="Self.TimePeriod" />
+          <EntitySet Name="TimeSeries" EntityType="Self.TimeSery" />
+          <AssociationSet Name="FK_TimeSeries_Categories" Association="Self.FK_TimeSeries_Categories">
+            <End Role="Categories" EntitySet="Categories" />
+            <End Role="TimeSeries" EntitySet="TimeSeries" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SeriesPoints_TimePeriods" Association="Self.FK_SeriesPoints_TimePeriods">
+            <End Role="TimePeriods" EntitySet="TimePeriods" />
+            <End Role="SeriesPoints" EntitySet="SeriesPoints" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SeriesPoints_TimeSeries" Association="Self.FK_SeriesPoints_TimeSeries">
+            <End Role="TimeSeries" EntitySet="TimeSeries" />
+            <End Role="SeriesPoints" EntitySet="SeriesPoints" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="TSDBModelStoreContainer" CdmEntityContainer="TSDBEntities">
+          <EntitySetMapping Name="Categories">
+            <EntityTypeMapping TypeName="TSDBModel.Category">
+              <MappingFragment StoreEntitySet="Categories">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ParentId" ColumnName="ParentId" />
+                <ScalarProperty Name="Level" ColumnName="Level" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SeriesPoints">
+            <EntityTypeMapping TypeName="TSDBModel.SeriesPoint">
+              <MappingFragment StoreEntitySet="SeriesPoints">
+                <ScalarProperty Name="SPValue" ColumnName="SPValue" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="TimeSeriesId" ColumnName="TimeSeriesId" />
+                <ScalarProperty Name="PeriodId" ColumnName="PeriodId" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TimePeriods">
+            <EntityTypeMapping TypeName="TSDBModel.TimePeriod">
+              <MappingFragment StoreEntitySet="TimePeriods">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TimeSeries">
+            <EntityTypeMapping TypeName="TSDBModel.TimeSery">
+              <MappingFragment StoreEntitySet="TimeSeries">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Last_Update" ColumnName="Last Update" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="9080cc46dc884b2e93758f04862d2f09" Name="Diagram1">
+        <EntityTypeShape EntityType="TSDBModel.Category" Width="1.5" PointX="0.75" PointY="1.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="TSDBModel.SeriesPoint" Width="1.5" PointX="5.25" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="TSDBModel.TimePeriod" Width="1.5" PointX="3" PointY="5.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="TSDBModel.TimeSery" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
+        <AssociationConnector Association="TSDBModel.FK_TimeSeries_Categories" ManuallyRouted="false" />
+        <AssociationConnector Association="TSDBModel.FK_SeriesPoints_TimePeriods" ManuallyRouted="false" />
+        <AssociationConnector Association="TSDBModel.FK_SeriesPoints_TimeSeries" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="TSDBModelStoreContainer" CdmEntityContainer="TSDBEntities">
+    <EntitySetMapping Name="Categories">
+      <EntityTypeMapping TypeName="TSDBModel.Category">
+        <MappingFragment StoreEntitySet="Categories">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="ParentId" ColumnName="ParentId" />
+          <ScalarProperty Name="Level" ColumnName="Level" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="SeriesPoints">
+      <EntityTypeMapping TypeName="TSDBModel.SeriesPoint">
+        <MappingFragment StoreEntitySet="SeriesPoints">
+          <ScalarProperty Name="SPValue" ColumnName="SPValue" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="TimeSeriesId" ColumnName="TimeSeriesId" />
+          <ScalarProperty Name="PeriodId" ColumnName="PeriodId" />
+          <ScalarProperty Name="Date" ColumnName="Date" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TimePeriods">
+      <EntityTypeMapping TypeName="TSDBModel.TimePeriod">
+        <MappingFragment StoreEntitySet="TimePeriods">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TimeSeries">
+      <EntityTypeMapping TypeName="TSDBModel.TimeSery">
+        <MappingFragment StoreEntitySet="TimeSeries">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="Last_Update" ColumnName="Last Update" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

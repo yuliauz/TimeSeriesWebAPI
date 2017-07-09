@@ -1,0 +1,93 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="TSDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Categories">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" Nullable="false" />
+    <Property Name="Name" Type="nchar" MaxLength="20" Nullable="false" />
+    <Property Name="ParentId" Type="int" Nullable="false" />
+    <Property Name="Level" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="SeriesPoints">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" Nullable="false" />
+    <Property Name="TimeSeriesId" Type="int" Nullable="false" />
+    <Property Name="PeriodId" Type="int" Nullable="false" />
+    <Property Name="Date" Type="datetime" Nullable="false" />
+    <Property Name="SPValue" Type="decimal" Precision="18" Scale="0" Nullable="false" />
+  </EntityType>
+  <EntityType Name="TimePeriods">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" Nullable="false" />
+    <Property Name="Name" Type="nchar" MaxLength="10" Nullable="false" />
+  </EntityType>
+  <EntityType Name="TimeSeries">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" Nullable="false" />
+    <Property Name="CategoryId" Type="int" Nullable="false" />
+    <Property Name="Name" Type="nchar" MaxLength="20" Nullable="false" />
+    <Property Name="Description" Type="nchar" MaxLength="50" />
+    <Property Name="Last Update" Type="datetime" Nullable="false" />
+  </EntityType>
+  <Association Name="FK_SeriesPoints_TimePeriods">
+    <End Role="TimePeriods" Type="Self.TimePeriods" Multiplicity="1" />
+    <End Role="SeriesPoints" Type="Self.SeriesPoints" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="TimePeriods">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="SeriesPoints">
+        <PropertyRef Name="PeriodId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_SeriesPoints_TimeSeries">
+    <End Role="TimeSeries" Type="Self.TimeSeries" Multiplicity="1" />
+    <End Role="SeriesPoints" Type="Self.SeriesPoints" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="TimeSeries">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="SeriesPoints">
+        <PropertyRef Name="TimeSeriesId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_TimeSeries_Categories">
+    <End Role="Categories" Type="Self.Categories" Multiplicity="1" />
+    <End Role="TimeSeries" Type="Self.TimeSeries" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Categories">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="TimeSeries">
+        <PropertyRef Name="CategoryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="TSDBModelStoreContainer">
+    <EntitySet Name="Categories" EntityType="Self.Categories" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="SeriesPoints" EntityType="Self.SeriesPoints" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="TimePeriods" EntityType="Self.TimePeriods" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="TimeSeries" EntityType="Self.TimeSeries" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_SeriesPoints_TimePeriods" Association="Self.FK_SeriesPoints_TimePeriods">
+      <End Role="TimePeriods" EntitySet="TimePeriods" />
+      <End Role="SeriesPoints" EntitySet="SeriesPoints" />
+    </AssociationSet>
+    <AssociationSet Name="FK_SeriesPoints_TimeSeries" Association="Self.FK_SeriesPoints_TimeSeries">
+      <End Role="TimeSeries" EntitySet="TimeSeries" />
+      <End Role="SeriesPoints" EntitySet="SeriesPoints" />
+    </AssociationSet>
+    <AssociationSet Name="FK_TimeSeries_Categories" Association="Self.FK_TimeSeries_Categories">
+      <End Role="Categories" EntitySet="Categories" />
+      <End Role="TimeSeries" EntitySet="TimeSeries" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
